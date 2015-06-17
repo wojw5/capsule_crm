@@ -23,5 +23,42 @@ module CapsuleCRM
     def contacts
       @contacts ||= CapsuleCRM::Contacts.new
     end
+
+    def destroy_phones
+      phones.reject! do |phone|
+        CapsuleCRM::Connection.delete(build_contact_destroy_path(phone))
+      end
+    end
+
+    def destroy_websites
+      websites.reject! do |website|
+        CapsuleCRM::Connection.delete(build_contact_destroy_path(website))
+      end
+    end
+
+    def destroy_emails
+      emails.reject! do |email|
+        CapsuleCRM::Connection.delete(build_contact_destroy_path(email))
+      end
+    end
+
+    def destroy_addresses
+      addresses.reject! do |address|
+        CapsuleCRM::Connection.delete(build_contact_destroy_path(address))
+      end
+    end
+
+    def destroy_contacts
+      destroy_addresses
+      destroy_emails
+      destroy_websites
+      destroy_phones
+    end
+
+    private
+
+    def build_contact_destroy_path(contact)
+      "/api/#{queryable_options.singular}/#{id}/contact/#{contact.id}"
+    end
   end
 end
