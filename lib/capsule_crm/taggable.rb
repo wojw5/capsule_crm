@@ -7,6 +7,7 @@ module CapsuleCRM
         "/api/#{api_singular_name}/#{id}/tag"
       )['tags']['tag']
       tags = [tags] if tags.is_a? Hash
+      return [] if tags.nil?
       tags.map { |item| CapsuleCRM::Tag.new(item) }
     end
 
